@@ -46,6 +46,7 @@ class S3Client:
         """
 
         buffer = self.download_file(filename, bucket_name)
+        json.loads(result.read())
         # TODO transform the data so that it's in the format defined here:
         # https://unified-slack.slack.com/archives/C03LPCF0FT2/p1658439058408359
         result = {'transcript': buffer['results']
@@ -55,8 +56,8 @@ class S3Client:
             if token['type'] == 'pronunciation':
                 cc.append({
                     'text': token['alternatives'][0]['content'],
-                    'start': token['start_time'],
-                    'end': token['end_time']
+                    'start': float(token['start_time']),
+                    'end': float(token['end_time'])
                 })
         result['cc'] = cc
-        return json.loads(result.read())
+        return result
