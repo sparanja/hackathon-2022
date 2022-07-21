@@ -4,14 +4,31 @@ This project is a Django API server with integrated Postgresql DB for Offensive 
 Steps to setup local environment: <br></br>
 -> Clone the master into local. <br></br>
 -> Open project using an IDE of your choice(eg. Pycharm) <br></br>
--> Project has been compiled with Python 3.7 and requires Django 3.4 and above <br></br>
--> Recommend using Python 3.7 and setting up a python virtual environment using pyenv -> https://realpython.com/intro-to-pyenv/ <br></br>
+-> Project has been compiled with Python 3.10 and requires Django 3.2 and above <br></br>
+-> Recommend using Python 3.10 and setting up a python virtual environment using pyenv -> https://realpython.com/intro-to-pyenv/ <br></br>
 
 ```
-# install 3.7.10 (on M1 this should work just fine)
-pyenv install 3.7.10
-# set 3.7.10 as the version for the project
-pyenv local 3.7.10
+# pyenv local 3.10.3 (on M1 this should work just fine)
+pyenv install 3.10.3
+
+# set 3.10.3 as the version for the project
+pyenv local 3.10.3
+
+# confirm that you're using 3.10.3
+python --version
+
+# create virtual environment
+python -m venv .venv
+
+# activate virtual environemt
+source .venv/bin/activate
+
+# upgrade some base packages
+python -m pip install -U pip setuptools wheel
+
+# install dependencies
+pip install -r requirements.txt
+
 ```
 
 -> Set the Project Interpreter to the virtual environment you created on the IDE under Pycharm > Preferences:<br></br>
