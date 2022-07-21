@@ -60,3 +60,8 @@ class S3Client:
                 })
         result['cc'] = cc
         return result
+
+
+def s3_url(bucket_name: str, filename: str) -> str:
+    """return the S3 URL"""
+    return f"https://s3.amazon.com/{bucket_name}/{filename}"
