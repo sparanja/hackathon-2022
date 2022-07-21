@@ -3,6 +3,7 @@ import uuid
 import boto3
 from django.conf import settings
 from django.http import HttpResponse
+from django.views.decorators.http import require_http_methods
 
 from offensiveAdsFlagger.models import ExampleModel
 
@@ -31,6 +32,7 @@ s3 = boto3.client(
     aws_secret_access_key=settings.AWS_SECRET_KEY,
 )
 
+@require_http_methods(["POST"])
 def upload(request):
     """"""
     # get a post request
