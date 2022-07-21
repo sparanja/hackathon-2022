@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.conf import settings
 # Create your models here.
 
 
@@ -17,13 +17,13 @@ class Transcription(models.Model):
     class Meta:
         db_table = "audio_transcriptions"
 
-
 class AudioAd(models.Model):
     STATUS = [
         ("Pending", "Pending"),
         ("Approved", "Approved"),
-        ("Regected", "Regected"),
+        ("Rejected", "Rejected"),
     ]
+    id = models.CharField(max_length=50, primary_key=True,null=False)
     status = models.CharField(
         max_length=10,
         choices=STATUS,
@@ -46,7 +46,7 @@ class AudioAd(models.Model):
         null=False,
         help_text="Name of the audio file. This will be used as the key when storing in s3"
     )
-    uploaded_at = date = models.DateTimeField(
+    uploaded_at = models.DateTimeField(
         auto_now_add=True,
         blank=True,
         help_text="time where we made stroed the transcription",
@@ -61,3 +61,7 @@ class AudioAd(models.Model):
     def s3_url(self) -> str:
         """"""
         # TODO implemnt this so that we can return the s3 link to the frontend
+
+class JoinTable(models.Model):
+    ad_id = models.ForeignKey(to=AudioAd, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
