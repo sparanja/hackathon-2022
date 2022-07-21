@@ -36,6 +36,8 @@ except KeyError:
     print("Error: Must set the following environment variables:\n\tAWS_ACCESS_KEY\n\tAWS_SECRET_KEY\n\tAWS_S3_BUCKET")
     sys.exit()
 
+SLEEP_SECONDS = os.environ.get("SLEEP_SECONDS", 3)
+
 # Application definition
 
 INSTALLED_APPS = [
