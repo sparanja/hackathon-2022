@@ -3,10 +3,12 @@ import json
 from typing import Dict, Any, Optional
 
 from django.conf import settings
+from sample_transcription import format_test_data
 
 
 class S3Client:
     """S3 client class that abstracts the interactions with AWS S3"""
+
     def __init__(self, clinet, bucket_name: Optional[str] = None):
         self.client = clinet
         if bucket_name is None:
@@ -42,7 +44,19 @@ class S3Client:
 
         Transciptions are assumed to be formatted as JSON
         """
-        buffer = self.download_file(filename, bucket_name)
+
+        buffer = json.loads(self.download_file(filename, bucket_name))
         # TODO transform the data so that it's in the format defined here:
         # https://unified-slack.slack.com/archives/C03LPCF0FT2/p1658439058408359
-        return json.loads(buffer.read())
+        transcript = buffer['results']['transcripts'][0]['transcript']
+        result = {'transcript': transcript}
+        cc = []
+        for token in buffer['results']['items']:
+            if token['type'] == 'pronunciation':
+                cc.append({
+                    'text': token['alternatives'][0]['content'],
+                    'start': float(token['start_time']),
+                    'end': float(token['end_time'])
+                })
+        result['cc'] = cc
+        return result
