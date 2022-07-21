@@ -3,7 +3,6 @@ import json
 from typing import Dict, Any, Optional
 
 from django.conf import settings
-from sample_transcription import format_test_data
 
 
 class S3Client:
