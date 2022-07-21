@@ -1,0 +1,22 @@
+# pycharm
+.idea
+# vscode specific folder
+.vscode
+
+# various environment variables
+.env
+
+# Files created when running python
+__pycache__
+
+# macOS specific
+.ds_store
+
+# created by Django. We don't need this
+db.sqlite3
+
+# pyenv
+.python-version
+
+# local postgress setup via docker
+data/db/*
