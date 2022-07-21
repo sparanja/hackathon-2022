@@ -6,6 +6,7 @@ from django.http import HttpResponse
 from django.views.decorators.http import require_http_methods
 
 from offensiveAdsFlagger.models import ExampleModel
+from offensiveAdsFlagger.aws import S3Client
 
 
 def index(request):
@@ -26,7 +27,7 @@ transcribe = boto3.client(
     aws_secret_access_key=settings.AWS_SECRET_KEY,
 )
 
-s3 = boto3.client(
+s3_client = boto3.client(
     "s3",
     aws_access_key_id=settings.AWS_ACCESS_KEY,
     aws_secret_access_key=settings.AWS_SECRET_KEY,
@@ -40,6 +41,13 @@ def upload(request):
     # check if we already processed this file and exit early if we did
 
     # store the file in s3 (to be determined if we have time)
+    s3 = S3Client(s3_client)
+
+    # we're assuming that we only get a single file, which for our app should be the case
+    # See the HttpRequest.FILES docs for more details on files:
+    # https://docs.djangoproject.com/en/4.0/ref/request-response/#django.http.HttpRequest.FILES
+    fileanme, file_content = list(request.FILES.items())[0]
+    s3.upload_file(fileanme, file_content)
 
     # kick off the transciption job (job returns an ID)
     response = transcribe.start_transcription_job(
