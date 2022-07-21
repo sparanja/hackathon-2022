@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.views.decorators.http import require_http_methods
 
 from offensiveAdsFlagger.models import ExampleModel
-from offensiveAdsFlagger.aws import S3Client
+from offensiveAdsFlagger.aws import S3Client, TranscribeClient
 
 
 def index(request):
@@ -21,7 +21,7 @@ def example(request):
 
 # pass the access key and secret key
 # set via env variable
-transcribe = boto3.client(
+transcribe_client = boto3.client(
     "transcribe",
     aws_access_key_id=settings.AWS_ACCESS_KEY,
     aws_secret_access_key=settings.AWS_SECRET_KEY,
@@ -50,20 +50,11 @@ def upload(request):
     s3.upload_file(fileanme, file_content)
 
     # kick off the transciption job (job returns an ID)
-    response = transcribe.start_transcription_job(
-        # Unique ID for each job. If we try to start a job with the same
-        # name as an existing job then a ConflictException is raised
-        TranscriptionJobName=str(uuid.uuid4()),
-        # Assume we're always using english.
-        LanguageCode='en-US',
-        # Assume we're always using mp3 files
-        MediaFormat='mp3',
-        Media={
-            'MediaFileUri': object_url
-        },
-        OutputBucketName=OUTPUT_BUCKET,
-        OutputKey=output_file_name(file_name),
-    )
+    transcribe = TranscribeClient(transcribe_client)
+    output_file = transcribe.transcribe_file(filename)
+
+    # download the transciption job stored in s3
+    json_data = s3.download_transcription_job(output_file)
 
     transciption_id = response["id"]
 
