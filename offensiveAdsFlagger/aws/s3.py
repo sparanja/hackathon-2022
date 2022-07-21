@@ -43,4 +43,6 @@ class S3Client:
         Transciptions are assumed to be formatted as JSON
         """
         buffer = self.download_file(filename, bucket_name)
+        # TODO transform the data so that it's in the format defined here:
+        # https://unified-slack.slack.com/archives/C03LPCF0FT2/p1658439058408359
         return json.loads(buffer.read())
