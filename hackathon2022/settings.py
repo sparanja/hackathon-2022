@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
+import sys
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -27,6 +28,13 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+try:
+    AWS_ACCESS_KEY = os.environ["AWS_ACCESS_KEY"]
+    AWS_SECRET_KEY = os.environ["AWS_SECRET_KEY"]
+    AWS_S3_BUCKET = os.environ["AWS_S3_BUCKET"]
+except KeyError:
+    print("Error: Must set the following environment variables:\n\tAWS_ACCESS_KEY\n\tAWS_SECRET_KEY\n\tAWS_S3_BUCKET")
+    sys.exit()
 
 # Application definition
 
