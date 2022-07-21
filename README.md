@@ -6,6 +6,14 @@ Steps to setup local environment: <br></br>
 -> Open project using an IDE of your choice(eg. Pycharm) <br></br>
 -> Project has been compiled with Python 3.7 and requires Django 3.4 and above <br></br>
 -> Recommend using Python 3.7 and setting up a python virtual environment using pyenv -> https://realpython.com/intro-to-pyenv/ <br></br>
+
+```
+# install 3.7.10 (on M1 this should work just fine)
+pyenv install 3.7.10
+# set 3.7.10 as the version for the project
+pyenv local 3.7.10
+```
+
 -> Set the Project Interpreter to the virtual environment you created on the IDE under Pycharm > Preferences:<br></br>
     ![image](https://user-images.githubusercontent.com/43121486/180129423-98663a2e-df92-4927-bc56-30021dccde47.png) <br></br>
 
