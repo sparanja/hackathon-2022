@@ -13,10 +13,31 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
 from django.contrib import admin
+from django.http import JsonResponse
 from django.urls import path, include
+
+
+def health(request):
+    """Health endpoint that we can use to check the status of the server / various configuration values"""
+    http_host = request.META['HTTP_HOST']
+    database = settings.DATABASES["default"]
+    response = {
+        "host": http_host,
+        "db": {
+            "engine": database["ENGINE"],
+            "database_name": database["NAME"],
+            "user": database["USER"],
+            "host": database["HOST"],
+            "port": database["PORT"],
+        }
+    }
+    return JsonResponse(response, json_dumps_params={"indent": 4})
+
 
 urlpatterns = [
     path('offensiveAdsFlagger/', include('offensiveAdsFlagger.urls')),
     path('admin/', admin.site.urls),
+    path("health/", health)
 ]
