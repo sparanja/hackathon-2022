@@ -75,6 +75,11 @@ To verify the app is up and running open up a web browser and head to `http://lo
 Set the Project Interpreter to the virtual environment you created on the IDE under Pycharm > Preferences:
     ![image](https://user-images.githubusercontent.com/43121486/180129423-98663a2e-df92-4927-bc56-30021dccde47.png)
 
+#### Loading Test Data
+In root folder run python3 manage.py loaddata mydata.json.gz
+Test data for users should be loaded into auth_user table
+Test data for ads should be loaded into offensiveAdsFlagger_examplemodel
+
 #### Running The APP
 Run the Web server using the Run tab:
     ![image](https://user-images.githubusercontent.com/43121486/180129951-1040afab-900e-4a85-a45e-f9b4386223b8.png)
