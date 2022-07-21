@@ -36,9 +36,7 @@ s3_client = boto3.client(
 @require_http_methods(["POST"])
 def upload(request):
     """"""
-    # get a post request
-
-    # check if we already processed this file and exit early if we did
+    # TODO (low priority) check if we already processed this file and exit early if we did
 
     # store the file in s3 (to be determined if we have time)
     s3 = S3Client(s3_client)
@@ -56,14 +54,26 @@ def upload(request):
     # download the transciption job stored in s3
     json_data = s3.download_transcription_job(output_file)
 
-    transciption_id = response["id"]
+    # TODO (high priority) pass the transciption text to the model
 
-    # use the ID to poll the transcription service until the job is ready
+    # TODO (high priority) create entries for the Transciption / AudioAd model
 
-    # once the job is done pull the transciption from s3
+    # TODO (medium proity) associate the user with this AudioAd
 
-    # pass the transciption text to the model
+    # TODO (high priority) return reponse to the user
 
-    # create entries for the Transciption / AudioAd model
 
-    # return reponse to the user
+def change_ad_status(request, audio_ad_id):
+    """"""
+    # TODO (medium priority) allow admins to change the status of Ads
+
+
+def list_audio_ads(request):
+    """"""
+    # TODO (high priority) list ads for the user
+    # (maybe filter based on user but for demo we can probably just list out all the audio ads)
+
+
+def remove_ad_from_user(request, audio_ad_id):
+    """disassociate a user from an add"""
+    # TODO (low priority)
