@@ -45,12 +45,11 @@ class S3Client:
         Transciptions are assumed to be formatted as JSON
         """
 
-        buffer = self.download_file(filename, bucket_name)
-        json.loads(result.read())
+        buffer = json.loads(self.download_file(filename, bucket_name))
         # TODO transform the data so that it's in the format defined here:
         # https://unified-slack.slack.com/archives/C03LPCF0FT2/p1658439058408359
-        result = {'transcript': buffer['results']
-                  ['transcripts'][0]['transcript']}
+        transcript = buffer['results']['transcripts'][0]['transcript']
+        result = {'transcript': transcript}
         cc = []
         for token in buffer['results']['items']:
             if token['type'] == 'pronunciation':
