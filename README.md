@@ -66,6 +66,8 @@ python manage.py migrate
 python manage.py runserver
 ```
 
+To verify the app is up and running open up a web browser and head to `http://localhost:8000/health`
+
 
 ###  Pycharm users
 
