@@ -20,3 +20,6 @@ db.sqlite3
 
 # local postgress setup via docker
 data/db/*
+
+# python virtual environment
+.venv
