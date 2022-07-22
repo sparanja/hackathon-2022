@@ -2,10 +2,12 @@ import * as React from "react";
 import {
  Box,
  Button,
+ Center,
  Flex,
  FormControl,
  FormLabel,
  Heading,
+ Image,
  Input,
  Spacer,
  Stack,
@@ -120,9 +122,14 @@ export const AdCreationForm = () => {
      <Box minW={{ base: "90%", md: "468px" }}>
       <Stack spacing={6} justifyContent="center">
        <Box>
-        <Heading color="red" pb="10">
-         An IHM Logo
-        </Heading>
+        <Center>
+         <Image
+          boxSize="200px"
+          objectFit="contain"
+          src="./imgs/IHM.png"
+          alt="IHM logo"
+         />
+        </Center>
        </Box>
        <Box>
         <Heading p="3">Finishing Your Ad Placement</Heading>
@@ -144,8 +151,15 @@ export const AdCreationForm = () => {
 
  return (
   <Stack spacing={6}>
-   <Heading color="red" pb="10">
-    An IHM Logo
+   <Heading color="red.600">
+    <Image
+     boxSize="30px"
+     objectFit="contain"
+     display="inline-block"
+     src="./imgs/IHM.png"
+     alt="IHM logo"
+    />
+    Audio AD Builder
    </Heading>
    <Box minW={{ base: "90%", md: "468px" }}>
     <form onSubmit={handleSubmit}>
