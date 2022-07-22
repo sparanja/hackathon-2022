@@ -7,4 +7,5 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('exampleModel', views.example),
+    path('listAudioAds', views.list_audio_ads),
 ]
