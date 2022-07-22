@@ -27,7 +27,7 @@ class S3Client:
             Key=filename,
         )
 
-    def download_file(self, filename: str, bucket_name: Optional[str] = None) -> io.TextIOWrapper:
+    def download_file(self, filename: str, bucket_name: Optional[str] = None) -> io.BytesIO:
         """download a file from s3"""
         bucket_name = bucket_name or self.bucket_name
 
@@ -38,7 +38,7 @@ class S3Client:
             Fileobj=buffer,
         )
         buffer.seek(0)
-        return io.TextIOWrapper(buffer)
+        return buffer
 
     def download_transcription_job(self, filename: str, bucket_name: Optional[str] = None) -> Dict[str, Any]:
         """Download a transciption from an AWS bucket.
@@ -47,7 +47,8 @@ class S3Client:
         """
         # Transforms the data so that it's in the format defined here:
         # https://unified-slack.slack.com/archives/C03LPCF0FT2/p1658439058408359
-        buffer = json.loads(self.download_file(filename, bucket_name).read())
+        buffer = io.TextIOWrapper(self.download_file(filename, bucket_name))
+        buffer = json.loads(buffer.read())
         transcript = buffer['results']['transcripts'][0]['transcript']
         result = {'transcript': transcript}
         cc = []

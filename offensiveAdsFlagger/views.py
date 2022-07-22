@@ -7,7 +7,7 @@ import uuid
 
 import boto3
 from django.conf import settings
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, FileResponse
 from django.views.decorators.http import require_http_methods
 
 from offensiveAdsFlagger.aws import S3Client, TranscribeClient
@@ -103,6 +103,14 @@ def upload(request):
     json_data["fileName"] = filename
     json_data["status"] = ad.status
     return JsonResponse(json_data)
+
+
+@require_http_methods(["GET"])
+def get_s3_file(request, filename):
+    breakpoint()
+    s3 = S3Client(s3_client)
+    buffer = s3.download_file(filename)
+    return FileResponse(buffer, filename=filename)
 
 
 def save_audio_with_transcript(json_data):

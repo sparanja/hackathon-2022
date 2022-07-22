@@ -44,3 +44,11 @@ def test_upload_endpoint_post(client, test_audio_file):
     assert audio_ad.audio_file_name == "home_depot_test_audio.mp3"
     assert audio_ad.transcription == transcription
 
+
+def test_download_mp3_file(client):
+    # test file that we know exists (yes we should change the name)
+    filename = "home_depot_test_audio"
+    url = f"api/audio/{filename}"
+    breakpoint()
+    response = client.get(url)
+    assert response.status_code == 200
