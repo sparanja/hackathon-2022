@@ -4,8 +4,13 @@ from django.conf import settings
 
 
 class ExampleModel(models.Model):
-    name = models.CharField(max_length=150)
-    phone = models.CharField(max_length=10)
+    id = models.CharField(max_length=50,primary_key=True)
+    ad_name = models.TextField(default='Test')
+    status = models.TextField(default='ACTIVE')
+    audio_file_name = models.TextField(default='test.mp3')
+    description = models.TextField(default='Test Description')
+    title = models.TextField(default='Test Title')
+    transcription = models.TextField(default='Test Transcription')
 
 
 class Transcription(models.Model):
