@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 # Create your models here.
+from offensiveAdsFlagger.aws.s3 import s3_url
 
 
 class ExampleModel(models.Model):
@@ -64,8 +65,8 @@ class AudioAd(models.Model):
 
 
     def s3_url(self) -> str:
-        """"""
-        # TODO implemnt this so that we can return the s3 link to the frontend
+        """return the HTTP URL for the audio file stored in s3"""
+        return s3_url(settings.AWS_S3_BUCKET, self.audio_file_name)
 
 class JoinTable(models.Model):
     ad_id = models.ForeignKey(to=AudioAd, on_delete=models.CASCADE)
