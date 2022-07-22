@@ -14,15 +14,12 @@ import {
  Icon,
 } from "@chakra-ui/react";
 import PlayerButton from "./PlayerButton";
-import StatusCodes, { getStatusColor } from "../common/StatusCodes";
+import StatusCode, { getStatusColor } from "../common/StatusCode";
 import StatusCirle from "./StatusCircle";
 
 export interface UserCardProps {}
 
 const title = "A title to be displayed";
-const nothing = () => {
- console.log("Noting was called");
-};
 
 const UserCard = () => {
  return (
@@ -46,7 +43,7 @@ const UserCard = () => {
      </Box>
     </Flex>
     <Flex direction="row" alignItems="center">
-     <PlayerButton size="lg" isPlaying={false} onClick={nothing} />
+     <PlayerButton size="lg" isPlaying={false} onClick={() => {}} />
      <Spacer />
      <Box>
       <Button>Fix Ad</Button>

@@ -3,19 +3,14 @@ import {
  Flex,
  Box,
  Stack,
- Input,
- InputGroup,
  Heading,
  Button,
- FormControl,
- FormLabel,
- FormHelperText,
  Spacer,
  Icon,
 } from "@chakra-ui/react";
 import PlayerButton from "./PlayerButton";
 
-export enum StatusCodes {
+export enum StatusCode {
  PENDING = "PENDING",
  APPROVED = "APPROVED",
  REJECTED = "REJECTED",
@@ -23,7 +18,7 @@ export enum StatusCodes {
 
 export interface AdminCardProps {
  title: string;
- status: StatusCodes;
+ status: StatusCode;
  isPlaying: boolean;
  transcript?: string;
  onMoreInfoClick: () => void;
@@ -38,14 +33,14 @@ const AdminCard = ({
  onMoreInfoClick,
  onPlayClick,
 }: AdminCardProps) => {
- const statusColor = (): string => {
-  if ((status = StatusCodes.APPROVED)) {
+ const statusColor = (status: StatusCode): string => {
+  if (status == StatusCode.APPROVED) {
    return "green";
   }
-  if ((status = StatusCodes.REJECTED)) {
+  if (status == StatusCode.REJECTED) {
    return "red";
   }
-  return "yellow";
+  return "yellow.300";
  };
 
  return (
@@ -66,7 +61,7 @@ const AdminCard = ({
      </Box>
      <Spacer />
      <Box px={3}>
-      <Icon w={12} h={12} viewBox="0 0 200 200" color={statusColor()}>
+      <Icon w={12} h={12} viewBox="0 0 200 200" color={statusColor(status)}>
        <path
         fill="currentColor"
         d="M 100, 100 m -75, 0 a 75,75 0 1,0 150,0 a 75,75 0 1,0 -150,0"
