@@ -8,6 +8,8 @@ import {
  Button,
  FormControl,
  FormLabel,
+ Center,
+ Image,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
@@ -29,9 +31,14 @@ export const UserLogin = () => {
 
  return (
   <Stack flexDir="column" mb="2" justifyContent="center" alignItems="center">
-   <Heading color="red" pb="10">
-    An IHM Logo
-   </Heading>
+   <Center>
+    <Image
+     boxSize="200px"
+     objectFit="contain"
+     src="./imgs/IHM.png"
+     alt="IHM logo"
+    />
+   </Center>
    <Box minW={{ base: "90%", md: "468px" }}>
     <form onSubmit={onSubmit}>
      <Stack

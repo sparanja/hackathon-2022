@@ -20,7 +20,7 @@ export const App = () => {
    <Flex
     flexDirection="column"
     width="100wh"
-    height="100vh"
+    minHeight="100vh"
     backgroundColor="gray.200"
     alignItems="center"
    >
