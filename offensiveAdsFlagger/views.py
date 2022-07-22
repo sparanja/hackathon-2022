@@ -91,13 +91,20 @@ def save_audio_with_transcript(json_data):
 def change_ad_status(request, audio_ad_id):
     """"""
     # TODO (medium priority) allow admins to change the status of Ads
-
+    ad = AudioAd.objects.get(id=audio_ad_id)
+    if ad.status == 'Approved':
+        ad.status = 'Rejected'
+    if ad.status == 'Rejected':
+        ad.status = 'Approved'
+    ad.save()
+    return '200'
 
 def list_audio_ads(request):
     """"""
     # TODO (high priority) list ads for the user
     # (maybe filter based on user but for demo we can probably just list out all the audio ads)
-
+    ads = AudioAd.objects.all()
+    return ads
 
 def remove_ad_from_user(request, audio_ad_id):
     """disassociate a user from an add"""
