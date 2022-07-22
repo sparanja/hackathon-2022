@@ -12,5 +12,5 @@ export const getStatusColor = (status: StatusCode): string => {
  if (status == StatusCode.REJECTED) {
   return "red";
  }
- return "yellow";
+ return "yellow.300";
 };

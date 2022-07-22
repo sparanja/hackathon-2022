@@ -1,6 +1,9 @@
 import * as React from "react";
-import { Box, Button, Flex, Stack } from "@chakra-ui/react";
+import { Box, Button, Flex, Stack, Link } from "@chakra-ui/react";
 import UserCard from "../components/UserCard";
+import { Link as ReactRouterLink } from "react-router-dom";
+
+const logoutHandler = () => {};
 
 export const UserDashboard = () => (
  <Flex
@@ -11,7 +14,10 @@ export const UserDashboard = () => (
   alignItems="center"
  >
   <Stack>
-   <Button colorScheme="red">Create A New Audio Ad</Button>
+   <Button onClick={logoutHandler}>LogOut</Button>
+   <Button colorScheme="red" as={ReactRouterLink} to="/adcreation">
+    Create A New Audio Ad
+   </Button>
    <UserCard />
   </Stack>
  </Flex>

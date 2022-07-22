@@ -26,6 +26,8 @@ interface AdminModalProps {
  isOpen: boolean;
  onPlayerClick: () => void;
  playerIsPlaying: boolean;
+ onRejectClick: () => void;
+ onApproveClick: () => void;
 }
 
 const statusText = (status: StatusCode) => {
@@ -45,6 +47,8 @@ export const AdminModal = ({
  onClose,
  onPlayerClick,
  playerIsPlaying,
+ onApproveClick,
+ onRejectClick,
 }: AdminModalProps) => {
  const statusColor = getStatusColor(status);
 
@@ -67,6 +71,7 @@ export const AdminModal = ({
     <ModalHeader>{title}</ModalHeader>
     <ModalCloseButton />
     <ModalBody>
+     <Box>{<StatusEl />}</Box>
      <Stack>
       <Flex mb="-10" mr="-2" justifyContent="end">
        <PlayerButton
@@ -83,11 +88,14 @@ export const AdminModal = ({
     <ModalFooter>
      {status === StatusCode.PENDING && (
       <Box>
-       <Button colorScheme="green">Approve</Button>
-       <Button colorScheme="red">Reject</Button>
+       <Button colorScheme="green" onClick={onApproveClick}>
+        Approve
+       </Button>
+       <Button colorScheme="red" onClick={onRejectClick}>
+        Reject
+       </Button>
       </Box>
      )}
-     {status !== StatusCode.PENDING && <StatusEl />}
     </ModalFooter>
    </ModalContent>
   </Modal>

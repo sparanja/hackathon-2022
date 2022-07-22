@@ -12,22 +12,57 @@ import {
  Stack,
  Textarea,
 } from "@chakra-ui/react";
+import axios from "axios";
+import { Link as ReactRouterLink } from "react-router-dom";
 
 export const AdCreationForm = () => {
  const fileInput = React.useRef<HTMLInputElement>(null);
  const adNameInput = React.useRef<HTMLInputElement>(null);
  const adDescriptionInput = React.useRef<HTMLTextAreaElement>(null);
  const [isMakingRequest, setIsMakingReuquest] = React.useState(false);
+ const UPLOAD_URL = "http://127.0.0.1:8000/api/upload";
 
  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
   /*
    ToDo handling for backend
    */
   event.preventDefault();
-  if (fileInput && adNameInput && adDescriptionInput) {
-   console.log(fileInput);
-   console.log(adNameInput);
-   console.log(adDescriptionInput);
+  if (fileInput.current && adNameInput.current && adDescriptionInput.current) {
+   /**
+    * {
+    * adName:
+    * adDescription:
+    * audioFile
+    * }
+    * */
+   console.log(fileInput.current.value);
+   console.log(adNameInput.current.value);
+   console.log(adDescriptionInput.current.value);
+   console.log({
+    adName: adNameInput.current.value,
+    adDescriptionInput: adDescriptionInput.current.value,
+    file: fileInput.current.value,
+   });
+
+   if (fileInput.current.files) {
+    const formData = new FormData();
+    formData.append("name", adNameInput.current.value);
+    formData.append("description", adDescriptionInput.current.value);
+    formData.append("fileName", fileInput.current.files[0].name);
+    formData.append("file", fileInput.current.files[0]);
+    axios
+     .post(UPLOAD_URL, formData, {
+      headers: {
+       "Content-Type": "multipart/form-data",
+      },
+     })
+     .then((res) => {
+      console.log("File Uploaded");
+     })
+     .catch((err) => {
+      console.log(err);
+     });
+   }
    setIsMakingReuquest(true);
   }
  };
@@ -63,7 +98,9 @@ export const AdCreationForm = () => {
         />
        </Box>
        <Box>
-        <Button>Check Back Later</Button>
+        <Button colorScheme="red" as={ReactRouterLink} to="/">
+         Check Back Later
+        </Button>
        </Box>
       </Stack>
      </Box>

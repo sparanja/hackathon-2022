@@ -75,8 +75,8 @@ export const AdminDashboard = () => {
    }
   } else {
    if (audioPlayer) {
-    audioPlayer.pause();
     audioPlayer.currentTime = 0;
+    audioPlayer.pause();
    }
    setisPlaying(true);
    setCurrentAd(ad);
@@ -91,8 +91,13 @@ export const AdminDashboard = () => {
   }
  };
  const onMoreInfoClickHandler = (ad: Ad) => {
+  const audioPlayer = audioElm.current;
   if (currentAd !== ad) {
    setisPlaying(false);
+   if (audioPlayer) {
+    audioPlayer.pause();
+    audioPlayer.currentTime = 0;
+   }
   }
   setCurrentAd(ad);
   if (!isOpen) {
@@ -104,6 +109,51 @@ export const AdminDashboard = () => {
   const audioPlayer = audioElm.current;
   if (audioPlayer) {
    audioPlayer.pause();
+  }
+ };
+ const approveClickHandler = () => {
+  if (currentAd && currentAd.status == StatusCode.PENDING) {
+   let newCurrentAd: Ad | null = null;
+   const newAds = ads.map(({ audioFile, id, status, title, transcript }) => {
+    const newAd = {
+     audioFile,
+     id,
+     status: id === currentAd.id ? StatusCode.APPROVED : status,
+     title,
+     transcript,
+    };
+    if (id === currentAd.id) {
+     newCurrentAd = newAd;
+    }
+    return newAd;
+   });
+   setAds(newAds);
+   if (newCurrentAd) {
+    setCurrentAd(newCurrentAd);
+   }
+  }
+ };
+
+ const rejectClickHandler = () => {
+  if (currentAd && currentAd.status == StatusCode.PENDING) {
+   let newCurrentAd: Ad | null = null;
+   const newAds = ads.map(({ audioFile, id, status, title, transcript }) => {
+    const newAd = {
+     audioFile,
+     id,
+     status: id === currentAd.id ? StatusCode.REJECTED : status,
+     title,
+     transcript,
+    };
+    if (id === currentAd.id) {
+     newCurrentAd = newAd;
+    }
+    return newAd;
+   });
+   setAds(newAds);
+   if (newCurrentAd) {
+    setCurrentAd(newCurrentAd);
+   }
   }
  };
 
@@ -166,6 +216,8 @@ export const AdminDashboard = () => {
      onClose={onCloseHanlder}
      onPlayerClick={() => onPlayClickHandler(currentAd)}
      playerIsPlaying={isPlaying}
+     onApproveClick={approveClickHandler}
+     onRejectClick={rejectClickHandler}
     />
    ) : undefined}
    <Flex
