@@ -37,7 +37,7 @@ def health(request):
 
 
 urlpatterns = [
-    path('offensiveAdsFlagger/', include('offensiveAdsFlagger.urls')),
+    path('api/', include('offensiveAdsFlagger.urls')),
     path('admin/', admin.site.urls),
     path("health/", health)
 ]
