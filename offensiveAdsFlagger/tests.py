@@ -29,7 +29,8 @@ def test_upload_endpoint_post(client, test_audio_file):
             {
                 "name": "Home Depo Commercial",
                 "description": "test description for home depot!",
-                "home_depot_test_audio.mp3": fp
+                "file": fp,
+                "fileName": "home_depot_test_audio.mp3",
             }
         )
         assert response.status_code == 200

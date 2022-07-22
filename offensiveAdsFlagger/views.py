@@ -55,6 +55,7 @@ def upload(request):
     # TODO (low priority) check if we already processed this file and exit early if we did
     ad_name = request.POST["name"]
     description = request.POST["description"]
+    filename = request.POST["fileName"]
 
     # store the file in s3 (to be determined if we have time)
     s3 = S3Client(s3_client)
@@ -64,7 +65,7 @@ def upload(request):
     # https://docs.djangoproject.com/en/4.0/ref/request-response/#django.http.HttpRequest.FILES
     print(request.POST)
     print(request.FILES)
-    filename, file_content = list(request.FILES.items())[0]
+    _, file_content = list(request.FILES.items())[0]
     s3.upload_file(filename, file_content)
 
     # kick off the transciption job (job returns an ID)
