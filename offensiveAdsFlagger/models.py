@@ -14,7 +14,7 @@ class Transcription(models.Model):
         db_table = "audio_transcriptions"
 
     def save(self, *args, **kwargs):
-        if self.confidence >= .6:
+        if self.confidence >= .7:
             self.contains_food = True
         else:
             self.contains_food = False
@@ -71,9 +71,9 @@ class AudioAd(models.Model):
         if self.transcription.confidence >= .7:
             self.status = "Approved"
         elif self.transcription.confidence >= .3:
-            self.status = "Pending"
-        else:
             self.status = "Rejected"
+        else:
+            self.status = "Pending"
         super().save()
 
 
