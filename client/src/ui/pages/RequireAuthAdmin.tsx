@@ -7,13 +7,13 @@ const useAuth = () => {
  }
  return { user: undefined };
 };
-export const RequireAuth = () => {
+export const RequireAuthAdmin = () => {
  let auth = useAuth();
  let location = useLocation();
- if (!auth.user || !auth.user) {
-  return <Navigate to="/login" state={{ from: location }} />;
+ if (!auth.user || !auth.user.isAdmin) {
+  return <Navigate to="/adminlogin" state={{ from: location }} />;
  }
  return <Outlet />;
 };
 
-export default RequireAuth;
+export default RequireAuthAdmin;

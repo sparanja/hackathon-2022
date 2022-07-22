@@ -143,61 +143,52 @@ export const AdCreationForm = () => {
  }
 
  return (
-  <Flex
-   flexDirection="column"
-   width="100wh"
-   height="100vh"
-   backgroundColor="gray.200"
-   justifyContent="center"
-   alignItems="center"
-  >
-   <Stack spacing={6}>
-    <Heading color="red" pb="10">
-     An IHM Logo
-    </Heading>
-    <Box minW={{ base: "90%", md: "468px" }}>
-     <form onSubmit={handleSubmit}>
-      <Stack
-       spacing={4}
-       p="4rem"
-       backgroundColor="whiteAlpha.900"
-       boxShadow="md"
-      >
-       <FormControl pb="10">
-        <FormLabel>Ad Name:</FormLabel>
-        <Input
-         ref={adNameInput}
-         type="text"
-         placeholder="Your Ad Name..."
-         required
-        />
-       </FormControl>
-       <FormControl pb="10">
-        <FormLabel>Ad Description:</FormLabel>
-        <Textarea
-         ref={adDescriptionInput}
-         placeholder="Your Ad lists the following about your Company's Product"
-         required
-        />
-       </FormControl>
-       <FormControl pb="10">
-        <FormLabel>Audio File:</FormLabel>
-        <Input ref={fileInput} type="file" required />
-       </FormControl>
-       <FormControl pb="10">
-        <Flex flexDirection="row">
-         <Button type="submit" variant="solid" colorScheme="red">
-          Submit
-         </Button>
-         <Spacer />
-         <Button onClick={resetHandler}>Reset</Button>
-        </Flex>
-       </FormControl>
-      </Stack>
-     </form>
-    </Box>
-   </Stack>
-  </Flex>
+  <Stack spacing={6}>
+   <Heading color="red" pb="10">
+    An IHM Logo
+   </Heading>
+   <Box minW={{ base: "90%", md: "468px" }}>
+    <form onSubmit={handleSubmit}>
+     <Stack
+      spacing={4}
+      p="4rem"
+      backgroundColor="whiteAlpha.900"
+      boxShadow="md"
+     >
+      <FormControl pb="10">
+       <FormLabel>Ad Name:</FormLabel>
+       <Input
+        ref={adNameInput}
+        type="text"
+        placeholder="Your Ad Name..."
+        required
+       />
+      </FormControl>
+      <FormControl pb="10">
+       <FormLabel>Ad Description:</FormLabel>
+       <Textarea
+        ref={adDescriptionInput}
+        placeholder="Your Ad lists the following about your Company's Product"
+        required
+       />
+      </FormControl>
+      <FormControl pb="10">
+       <FormLabel>Audio File:</FormLabel>
+       <Input ref={fileInput} type="file" required />
+      </FormControl>
+      <FormControl pb="10">
+       <Flex flexDirection="row">
+        <Button type="submit" variant="solid" colorScheme="red">
+         Submit
+        </Button>
+        <Spacer />
+        <Button onClick={resetHandler}>Reset</Button>
+       </Flex>
+      </FormControl>
+     </Stack>
+    </form>
+   </Box>
+  </Stack>
  );
 };
 

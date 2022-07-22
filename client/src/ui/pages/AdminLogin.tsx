@@ -4,28 +4,33 @@ import {
  Box,
  Stack,
  Input,
- InputGroup,
- Heading,
  Button,
  FormControl,
  FormLabel,
- FormHelperText,
  Image,
  Center,
 } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
-export const AdminLogin = () => (
- <Flex
-  flexDirection="column"
-  width="100wh"
-  height="100vh"
-  backgroundColor="gray.200"
-  justifyContent="center"
-  alignItems="center"
- >
+export const AdminLogin = () => {
+ const navigate = useNavigate();
+ const emailInput = React.useRef<HTMLInputElement>(null);
+ const passwordInput = React.useRef<HTMLInputElement>(null);
+
+ const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  event.preventDefault();
+  if (emailInput.current && passwordInput.current) {
+   console.log(emailInput.current.value);
+   console.log(passwordInput.current.value);
+   const user = { email: emailInput.current.value, isAdmin: true };
+   localStorage.setItem("auth", JSON.stringify({ user }));
+   navigate("/admindash");
+  }
+ };
+ return (
   <Stack flexDir="column" mb="2" justifyContent="center" alignItems="center">
    <Box minW={{ base: "90%", md: "468px" }}>
-    <form>
+    <form onSubmit={onSubmit}>
      <Stack
       spacing={2}
       p="4rem"
@@ -42,11 +47,11 @@ export const AdminLogin = () => (
       </Center>
       <FormControl pb="10">
        <FormLabel>Email address</FormLabel>
-       <Input type="email" />
+       <Input ref={emailInput} type="email" />
       </FormControl>
       <FormControl pb="10">
        <FormLabel>Passwrod</FormLabel>
-       <Input type="password" />
+       <Input ref={passwordInput} type="password" />
       </FormControl>
       <Button type="submit" variant="solid" colorScheme="red" width="full">
        Login
@@ -55,7 +60,7 @@ export const AdminLogin = () => (
     </form>
    </Box>
   </Stack>
- </Flex>
-);
+ );
+};
 
 export default AdminLogin;

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Box, Flex, Stack, Text } from "@chakra-ui/react";
+import { Box, Center, Flex, Stack, Text } from "@chakra-ui/react";
 import AdminCard, { StatusCode } from "../components/AdminCard";
 import { useDisclosure } from "@chakra-ui/react";
 import AdminModal from "../components/AdminModal";
@@ -203,24 +203,21 @@ export const AdminDashboard = () => {
      onRejectClick={rejectClickHandler}
     />
    )}
-   <Flex
-    flexDirection="column"
-    width="100wh"
-    height="100vh"
-    backgroundColor="gray.200"
-    alignItems="center"
-   >
-    {isLoading && <Loader />}
-    <audio
-     ref={audioElm}
-     src={currentAd?.audioFile}
-     onLoadedMetadata={onLoadedMetadata}
-     onTimeUpdate={() => {}}
-     onPause={() => {}}
-     onEnded={onAudioEndedHandler}
-    ></audio>
-    {AdList}
-   </Flex>
+
+   {isLoading && (
+    <Center p={3}>
+     <Loader />
+    </Center>
+   )}
+   <audio
+    ref={audioElm}
+    src={currentAd?.audioFile}
+    onLoadedMetadata={onLoadedMetadata}
+    onTimeUpdate={() => {}}
+    onPause={() => {}}
+    onEnded={onAudioEndedHandler}
+   ></audio>
+   {AdList}
   </>
  );
 };

@@ -28,52 +28,43 @@ export const UserLogin = () => {
  };
 
  return (
-  <Flex
-   flexDirection="column"
-   width="100wh"
-   height="100vh"
-   backgroundColor="gray.200"
-   justifyContent="center"
-   alignItems="center"
-  >
-   <Stack flexDir="column" mb="2" justifyContent="center" alignItems="center">
-    <Heading color="red" pb="10">
-     An IHM Logo
-    </Heading>
-    <Box minW={{ base: "90%", md: "468px" }}>
-     <form onSubmit={onSubmit}>
-      <Stack
-       spacing={4}
-       p="4rem"
-       backgroundColor="whiteAlpha.900"
-       boxShadow="md"
-      >
-       <FormControl pb="10">
-        <FormLabel>Email address</FormLabel>
-        <Input
-         ref={emailInput}
-         type="email"
-         placeholder="johnsmith@website.com"
-         required
-        />
-       </FormControl>
-       <FormControl pb="10">
-        <FormLabel>Email address</FormLabel>
-        <Input
-         ref={passwordInput}
-         type="password"
-         placeholder="Password"
-         required
-        />
-       </FormControl>
-       <Button type="submit" variant="solid" colorScheme="red" width="full">
-        Login
-       </Button>
-      </Stack>
-     </form>
-    </Box>
-   </Stack>
-  </Flex>
+  <Stack flexDir="column" mb="2" justifyContent="center" alignItems="center">
+   <Heading color="red" pb="10">
+    An IHM Logo
+   </Heading>
+   <Box minW={{ base: "90%", md: "468px" }}>
+    <form onSubmit={onSubmit}>
+     <Stack
+      spacing={4}
+      p="4rem"
+      backgroundColor="whiteAlpha.900"
+      boxShadow="md"
+     >
+      <FormControl pb="10">
+       <FormLabel>Email address</FormLabel>
+       <Input
+        ref={emailInput}
+        type="email"
+        placeholder="johnsmith@website.com"
+        required
+       />
+      </FormControl>
+      <FormControl pb="10">
+       <FormLabel>Email address</FormLabel>
+       <Input
+        ref={passwordInput}
+        type="password"
+        placeholder="Password"
+        required
+       />
+      </FormControl>
+      <Button type="submit" variant="solid" colorScheme="red" width="full">
+       Login
+      </Button>
+     </Stack>
+    </form>
+   </Box>
+  </Stack>
  );
 };
 
