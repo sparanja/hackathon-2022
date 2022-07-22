@@ -35,6 +35,13 @@ interface Ad {
  status: StatusCode;
  audioFile: string;
  transcript: string;
+ cc: CC[];
+}
+
+interface CC {
+ end: number;
+ start: number;
+ text: string;
 }
 
 export const AdminDashboard = () => {
@@ -44,6 +51,7 @@ export const AdminDashboard = () => {
  const [ads, setAds] = React.useState<Ad[]>([]);
  const [isLoading, setIsLoading] = React.useState<boolean>(true);
  const [currentAd, setCurrentAd] = React.useState<Ad | null>(null);
+ const [mediaTime, setMediaTime] = React.useState<number>(0);
  const onCloseHanlder = () => {
   onClose();
  };
@@ -104,19 +112,22 @@ export const AdminDashboard = () => {
  const approveClickHandler = () => {
   if (currentAd && currentAd.status == StatusCode.PENDING) {
    let newCurrentAd: Ad | null = null;
-   const newAds = ads.map(({ audioFile, id, status, title, transcript }) => {
-    const newAd = {
-     audioFile,
-     id,
-     status: id === currentAd.id ? StatusCode.APPROVED : status,
-     title,
-     transcript,
-    };
-    if (id === currentAd.id) {
-     newCurrentAd = newAd;
+   const newAds = ads.map(
+    ({ audioFile, id, status, title, transcript, cc }) => {
+     const newAd = {
+      audioFile,
+      id,
+      status: id === currentAd.id ? StatusCode.APPROVED : status,
+      title,
+      transcript,
+      cc,
+     };
+     if (id === currentAd.id) {
+      newCurrentAd = newAd;
+     }
+     return newAd;
     }
-    return newAd;
-   });
+   );
    setAds(newAds);
    if (newCurrentAd) {
     setCurrentAd(newCurrentAd);
@@ -127,19 +138,22 @@ export const AdminDashboard = () => {
  const rejectClickHandler = () => {
   if (currentAd && currentAd.status == StatusCode.PENDING) {
    let newCurrentAd: Ad | null = null;
-   const newAds = ads.map(({ audioFile, id, status, title, transcript }) => {
-    const newAd = {
-     audioFile,
-     id,
-     status: id === currentAd.id ? StatusCode.REJECTED : status,
-     title,
-     transcript,
-    };
-    if (id === currentAd.id) {
-     newCurrentAd = newAd;
+   const newAds = ads.map(
+    ({ audioFile, id, status, title, transcript, cc }) => {
+     const newAd = {
+      audioFile,
+      id,
+      status: id === currentAd.id ? StatusCode.REJECTED : status,
+      title,
+      transcript,
+      cc,
+     };
+     if (id === currentAd.id) {
+      newCurrentAd = newAd;
+     }
+     return newAd;
     }
-    return newAd;
-   });
+   );
    setAds(newAds);
    if (newCurrentAd) {
     setCurrentAd(newCurrentAd);
@@ -147,14 +161,22 @@ export const AdminDashboard = () => {
   }
  };
 
+ const onTimeUpdateHandler = () => {
+  const audioPlayer = audioElm.current;
+  if (audioPlayer) {
+   const currentTime = audioPlayer.currentTime;
+
+   setMediaTime(currentTime + 0.1);
+  }
+ };
+
  React.useEffect(() => {
   setIsLoading(true);
   axios.get(UPLOAD_LIST_URL).then((res) => {
-   console.log(res);
    const ads: Ad[] = [];
    res.data.forEach((el: { ad: any; transcription: any }) => {
     const { id, status, title, audio_file_name } = el.ad;
-    const { transcript } = el.transcription;
+    const { transcript, cc } = el.transcription;
 
     ads.push({
      audioFile: `http://127.0.0.1:8000/api/audio/${audio_file_name}`,
@@ -162,6 +184,7 @@ export const AdminDashboard = () => {
      transcript: transcript,
      id: id,
      status: backendToFrontend(status),
+     cc,
     });
    });
    console.log(ads);
@@ -201,6 +224,8 @@ export const AdminDashboard = () => {
      playerIsPlaying={isPlaying}
      onApproveClick={approveClickHandler}
      onRejectClick={rejectClickHandler}
+     playerTime={mediaTime}
+     cc={currentAd.cc}
     />
    )}
 
@@ -213,7 +238,7 @@ export const AdminDashboard = () => {
     ref={audioElm}
     src={currentAd?.audioFile}
     onLoadedMetadata={onLoadedMetadata}
-    onTimeUpdate={() => {}}
+    onTimeUpdate={onTimeUpdateHandler}
     onPause={() => {}}
     onEnded={onAudioEndedHandler}
    ></audio>
