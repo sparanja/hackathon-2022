@@ -21,5 +21,6 @@ def test_upload_endpoint_get(method, client):
 
 def test_upload_endpoint_post(client, test_audio_file):
     """Make a POST request to the `/offensiveAdsFlagger/upload/"""
-    with open('wishlist.doc') as fp:
-        client.post('/offensiveAdsFlagger/upload', {'name': 'fred', 'attachment': fp})
+    with open(test_audio_file, mode="rb") as fp:
+        response = client.post('/offensiveAdsFlagger/upload', {'name': 'fred', 'attachment': fp})
+        assert response.status_code == 200
