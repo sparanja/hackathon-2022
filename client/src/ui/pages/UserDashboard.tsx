@@ -121,11 +121,9 @@ export const UserDashboard = () => {
  React.useEffect(() => {
   setIsLoading(true);
   axios.get(UPLOAD_LIST_URL).then((res) => {
-   console.log(res);
    const ads: Ad[] = [];
    res.data.forEach((el: { ad: any; transcription: any }) => {
     const { id, status, title, audio_file_name, description } = el.ad;
-    console.log(el);
     const { transcript, cc } = el.transcription;
 
     ads.push({
