@@ -21,7 +21,7 @@ from django.urls import path, include
 
 def health(request):
     """Health endpoint that we can use to check the status of the server / various configuration values"""
-    http_host = request.META['HTTP_HOST']
+    http_host = request.META.get('HTTP_HOST')
     database = settings.DATABASES["default"]
     response = {
         "host": http_host,
@@ -37,7 +37,7 @@ def health(request):
 
 
 urlpatterns = [
-    path('offensiveAdsFlagger/', include('offensiveAdsFlagger.urls')),
+    path('api/', include('offensiveAdsFlagger.urls')),
     path('admin/', admin.site.urls),
     path("health/", health)
 ]

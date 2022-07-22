@@ -14,7 +14,8 @@ class S3Client:
         if bucket_name is None:
             # default to settings.AWS_S3_BUCKET if none was provided
             self.bucket_name = settings.AWS_S3_BUCKET
-        self.bucket_name = bucket_name
+        else:
+            self.bucket_name = bucket_name
 
     def upload_file(self, filename: str, content: io.BytesIO, bucket_name: Optional[str] = None):
         """upload a file to s3"""
@@ -30,14 +31,14 @@ class S3Client:
         """download a file from s3"""
         bucket_name = bucket_name or self.bucket_name
 
-        buffer = io.TextIOWrapper()
+        buffer = io.BytesIO()
         self.client.download_fileobj(
             Bucket=bucket_name,
             Key=filename,
             Fileobj=buffer,
         )
         buffer.seek(0)
-        return buffer
+        return io.TextIOWrapper(buffer)
 
     def download_transcription_job(self, filename: str, bucket_name: Optional[str] = None) -> Dict[str, Any]:
         """Download a transciption from an AWS bucket.
@@ -46,7 +47,7 @@ class S3Client:
         """
         # Transforms the data so that it's in the format defined here:
         # https://unified-slack.slack.com/archives/C03LPCF0FT2/p1658439058408359
-        buffer = json.loads(self.download_file(filename, bucket_name))
+        buffer = json.loads(self.download_file(filename, bucket_name).read())
         transcript = buffer['results']['transcripts'][0]['transcript']
         result = {'transcript': transcript}
         cc = []
@@ -60,6 +61,7 @@ class S3Client:
         result['cc'] = cc
         return result
 
+    @staticmethod
     def forage_for_food(transcript):
         classifier = pipeline("zero-shot-classification")
         score = classifier(transcript, ['food'])
