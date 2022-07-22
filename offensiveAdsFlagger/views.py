@@ -33,6 +33,7 @@ s3_client = boto3.client(
     aws_secret_access_key=settings.AWS_SECRET_KEY,
 )
 
+
 @require_http_methods(["POST"])
 def upload(request):
     """"""
@@ -55,7 +56,7 @@ def upload(request):
     json_data = s3.download_transcription_job(output_file)
 
     # TODO (high priority) pass the transciption text to the model
-
+    likelihood_of_food = s3.forage_for_food(json_data['transcript'])
     # TODO (high priority) create entries for the Transciption / AudioAd model
 
     # TODO (medium proity) associate the user with this AudioAd

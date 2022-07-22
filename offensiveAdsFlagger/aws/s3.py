@@ -1,6 +1,7 @@
 import io
 import json
 from typing import Dict, Any, Optional
+from transformers import pipeline
 
 from django.conf import settings
 
@@ -43,10 +44,9 @@ class S3Client:
 
         Transciptions are assumed to be formatted as JSON
         """
-
-        buffer = json.loads(self.download_file(filename, bucket_name))
-        # TODO transform the data so that it's in the format defined here:
+        # Transforms the data so that it's in the format defined here:
         # https://unified-slack.slack.com/archives/C03LPCF0FT2/p1658439058408359
+        buffer = json.loads(self.download_file(filename, bucket_name))
         transcript = buffer['results']['transcripts'][0]['transcript']
         result = {'transcript': transcript}
         cc = []
@@ -59,6 +59,11 @@ class S3Client:
                 })
         result['cc'] = cc
         return result
+
+    def forage_for_food(transcript):
+        classifier = pipeline("zero-shot-classification")
+        score = classifier(transcript, ['food'])
+        return(score['scores'][0])
 
 
 def s3_url(bucket_name: str, filename: str) -> str:
