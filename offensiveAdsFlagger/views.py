@@ -1,13 +1,12 @@
-import json
-import uuid
+from django.utils import timezone
 
 import boto3
 from django.conf import settings
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_http_methods
 
-from offensiveAdsFlagger.models import ExampleModel
 from offensiveAdsFlagger.aws import S3Client, TranscribeClient
+from offensiveAdsFlagger.models import Transcription, AudioAd
 
 
 def index(request):
@@ -15,9 +14,19 @@ def index(request):
 
 
 def example(request):
-    ex = ExampleModel(1, 'Unified', '234536456')
-    ex.save()
-    return HttpResponse('Successfully created endpoint!')
+    json_data = {'confidence': 0.5,
+                 "transcript": "How to improve your dining room by the Home Depot,"
+                               "New wood floors, new paint on the walls. Sure. You know us for that."
+                               " But how about a new dining room table, matching chairs, bar stools?"
+                               "How about free and flexible delivery? With easy online returns? Now,"
+                               " you can explore decor in a whole new way, Save now on furniture,"
+                               " everything for your home, everything from home depot.com."
+                               "How doers get more done? Us only valid through September seven"
+                               "limitations apply.",
+                 'contains_food': False}
+    save_audio_with_transcript(json_data)
+
+    return HttpResponse('Successfully saved AudioAds to the Database')
 
 
 # pass the access key and secret key
@@ -65,6 +74,18 @@ def upload(request):
     # return reponse to the user
     json_data["confidence"] = json_data
     return JsonResponse(json_data)
+
+
+def save_audio_with_transcript(json_data):
+    transcription = Transcription(1, json_data, json_data['contains_food'], json_data['confidence'])
+    transcription.save()
+    # myDate = datetime.now()
+    myDate = timezone.now()
+    audio_ad = AudioAd('1', 'COMPLETED', 'Home Depot: A sign of the times', 'Description of the ad', 'HomeDepot.mp3',
+                       myDate, 1)
+    audio_ad.save()
+
+    return True
 
 
 def change_ad_status(request, audio_ad_id):
