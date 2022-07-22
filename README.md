@@ -64,6 +64,9 @@ python manage.py migrate
 
 # spin up the app running on localhost:8000
 python manage.py runserver
+
+# Alternatively run with gunicorn (in "production")
+gunicorn --workers=5 hackathon2022.wsgi:application
 ```
 
 To verify the app is up and running open up a web browser and head to `http://localhost:8000/health`
