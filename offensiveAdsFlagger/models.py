@@ -71,9 +71,9 @@ class AudioAd(models.Model):
         if self.transcription.confidence >= .7:
             self.status = "Approved"
         elif self.transcription.confidence >= .3:
-            self.status = "Rejected"
-        else:
             self.status = "Pending"
+        else:
+            self.status = "Rejected"
         super().save()
 
 
