@@ -1,6 +1,7 @@
 from django.contrib import admin
+from offensiveAdsFlagger.models import Transcription, AudioAd
 
 # Register your models here.
-from offensiveAdsFlagger.models import ExampleModel
 
-admin.site.register(ExampleModel)
+admin.site.register(Transcription)
+admin.site.register(AudioAd)

@@ -4,16 +4,6 @@ from django.conf import settings
 from offensiveAdsFlagger.aws.s3 import s3_url
 
 
-class ExampleModel(models.Model):
-    id = models.CharField(max_length=50,primary_key=True)
-    ad_name = models.TextField(default='Test')
-    status = models.TextField(default='ACTIVE')
-    audio_file_name = models.TextField(default='test.mp3')
-    description = models.TextField(default='Test Description')
-    title = models.TextField(default='Test Title')
-    transcription = models.TextField(default='Test Transcription')
-
-
 class Transcription(models.Model):
     """Transcription data for an ad"""
     data = models.JSONField()
@@ -23,13 +13,15 @@ class Transcription(models.Model):
     class Meta:
         db_table = "audio_transcriptions"
 
+
 class AudioAd(models.Model):
     STATUS = [
         ("Pending", "Pending"),
         ("Approved", "Approved"),
         ("Rejected", "Rejected"),
     ]
-    id = models.CharField(max_length=50, primary_key=True,null=False)
+
+    id = models.CharField(max_length=50, primary_key=True, null=False)
     status = models.CharField(
         max_length=10,
         choices=STATUS,
@@ -63,11 +55,13 @@ class AudioAd(models.Model):
     class Meta:
         db_table = "audio_ads"
 
-
     def s3_url(self) -> str:
         """return the HTTP URL for the audio file stored in s3"""
         return s3_url(settings.AWS_S3_BUCKET, self.audio_file_name)
 
+
+'''
 class JoinTable(models.Model):
     ad_id = models.ForeignKey(to=AudioAd, on_delete=models.CASCADE)
     user_id = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+'''
