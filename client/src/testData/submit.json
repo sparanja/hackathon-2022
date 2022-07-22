@@ -1,0 +1,323 @@
+{
+ "data": {
+  "transcript": "New Dunkin refreshers, vibrant fruit flavors like strawberry, dragon fruit and peach passion fruit, B vitamins and energy from green tea, all under 200 calories. Order ahead via the Duncan effort. Contact this way to order, pay and pick up in the drive through. America runs on Dunkin Price and participation may very limited time offer.",
+  "cc": [
+   {
+    "text": "New",
+    "start": 0.54,
+    "end": 0.85
+   },
+   {
+    "text": "Dunkin",
+    "start": 0.85,
+    "end": 1.2
+   },
+   {
+    "text": "refreshers",
+    "start": 1.2,
+    "end": 1.93
+   },
+   {
+    "text": "vibrant",
+    "start": 1.94,
+    "end": 2.45
+   },
+   {
+    "text": "fruit",
+    "start": 2.45,
+    "end": 2.6
+   },
+   {
+    "text": "flavors",
+    "start": 2.6,
+    "end": 2.93
+   },
+   {
+    "text": "like",
+    "start": 2.93,
+    "end": 3.06
+   },
+   {
+    "text": "strawberry",
+    "start": 3.06,
+    "end": 3.4
+   },
+   {
+    "text": "dragon",
+    "start": 3.4,
+    "end": 3.67
+   },
+   {
+    "text": "fruit",
+    "start": 3.67,
+    "end": 3.82
+   },
+   {
+    "text": "and",
+    "start": 3.82,
+    "end": 3.91
+   },
+   {
+    "text": "peach",
+    "start": 3.91,
+    "end": 4.1
+   },
+   {
+    "text": "passion",
+    "start": 4.1,
+    "end": 4.43
+   },
+   {
+    "text": "fruit",
+    "start": 4.43,
+    "end": 4.79
+   },
+   {
+    "text": "B",
+    "start": 4.8,
+    "end": 4.99
+   },
+   {
+    "text": "vitamins",
+    "start": 4.99,
+    "end": 5.38
+   },
+   {
+    "text": "and",
+    "start": 5.38,
+    "end": 5.52
+   },
+   {
+    "text": "energy",
+    "start": 5.53,
+    "end": 5.85
+   },
+   {
+    "text": "from",
+    "start": 5.85,
+    "end": 5.98
+   },
+   {
+    "text": "green",
+    "start": 5.98,
+    "end": 6.22
+   },
+   {
+    "text": "tea",
+    "start": 6.22,
+    "end": 6.56
+   },
+   {
+    "text": "all",
+    "start": 6.57,
+    "end": 6.86
+   },
+   {
+    "text": "under",
+    "start": 6.86,
+    "end": 7.03
+   },
+   {
+    "text": "200",
+    "start": 7.03,
+    "end": 7.42
+   },
+   {
+    "text": "calories",
+    "start": 7.42,
+    "end": 8.04
+   },
+   {
+    "text": "Order",
+    "start": 8.05,
+    "end": 8.31
+   },
+   {
+    "text": "ahead",
+    "start": 8.31,
+    "end": 8.57
+   },
+   {
+    "text": "via",
+    "start": 8.57,
+    "end": 8.73
+   },
+   {
+    "text": "the",
+    "start": 8.73,
+    "end": 8.81
+   },
+   {
+    "text": "Duncan",
+    "start": 8.81,
+    "end": 9.11
+   },
+   {
+    "text": "effort",
+    "start": 9.11,
+    "end": 9.37
+   },
+   {
+    "text": "Contact",
+    "start": 9.37,
+    "end": 9.72
+   },
+   {
+    "text": "this",
+    "start": 9.72,
+    "end": 9.86
+   },
+   {
+    "text": "way",
+    "start": 9.86,
+    "end": 9.98
+   },
+   {
+    "text": "to",
+    "start": 9.98,
+    "end": 10.07
+   },
+   {
+    "text": "order",
+    "start": 10.07,
+    "end": 10.33
+   },
+   {
+    "text": "pay",
+    "start": 10.33,
+    "end": 10.54
+   },
+   {
+    "text": "and",
+    "start": 10.54,
+    "end": 10.67
+   },
+   {
+    "text": "pick",
+    "start": 10.67,
+    "end": 10.82
+   },
+   {
+    "text": "up",
+    "start": 10.82,
+    "end": 10.92
+   },
+   {
+    "text": "in",
+    "start": 10.92,
+    "end": 10.98
+   },
+   {
+    "text": "the",
+    "start": 10.98,
+    "end": 11.05
+   },
+   {
+    "text": "drive",
+    "start": 11.05,
+    "end": 11.28
+   },
+   {
+    "text": "through",
+    "start": 11.28,
+    "end": 11.63
+   },
+   {
+    "text": "America",
+    "start": 11.64,
+    "end": 12.4
+   },
+   {
+    "text": "runs",
+    "start": 12.41,
+    "end": 12.71
+   },
+   {
+    "text": "on",
+    "start": 12.71,
+    "end": 12.87
+   },
+   {
+    "text": "Dunkin",
+    "start": 12.87,
+    "end": 13.34
+   },
+   {
+    "text": "Price",
+    "start": 13.35,
+    "end": 13.71
+   },
+   {
+    "text": "and",
+    "start": 13.71,
+    "end": 13.82
+   },
+   {
+    "text": "participation",
+    "start": 13.82,
+    "end": 14.38
+   },
+   {
+    "text": "may",
+    "start": 14.38,
+    "end": 14.45
+   },
+   {
+    "text": "very",
+    "start": 14.45,
+    "end": 14.69
+   },
+   {
+    "text": "limited",
+    "start": 14.69,
+    "end": 14.91
+   },
+   {
+    "text": "time",
+    "start": 14.91,
+    "end": 15.11
+   },
+   {
+    "text": "offer",
+    "start": 15.11,
+    "end": 15.56
+   }
+  ],
+  "confidence": 0.9833926558494568,
+  "id": "ac0e9fb4-9da0-48a9-be8d-17a987097c05",
+  "name": "Dunkin",
+  "description": "dunkin",
+  "fileName": "file",
+  "status": "Approved"
+ },
+ "status": 200,
+ "statusText": "OK",
+ "headers": {
+  "content-length": "3186",
+  "content-type": "application/json"
+ },
+ "config": {
+  "transitional": {
+   "silentJSONParsing": true,
+   "forcedJSONParsing": true,
+   "clarifyTimeoutError": false
+  },
+  "transformRequest": [null],
+  "transformResponse": [null],
+  "timeout": 0,
+  "xsrfCookieName": "XSRF-TOKEN",
+  "xsrfHeaderName": "X-XSRF-TOKEN",
+  "maxContentLength": -1,
+  "maxBodyLength": -1,
+  "env": {
+   "FormData": null
+  },
+  "headers": {
+   "Accept": "application/json, text/plain, */*"
+  },
+  "method": "post",
+  "url": "http://127.0.0.1:8000/api/upload",
+  "data": {}
+ },
+ "request": {}
+}

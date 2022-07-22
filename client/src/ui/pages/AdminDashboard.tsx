@@ -1,40 +1,33 @@
 import * as React from "react";
 import { Box, Flex, Stack, Text } from "@chakra-ui/react";
 import AdminCard, { StatusCode } from "../components/AdminCard";
-import {
- Modal,
- ModalOverlay,
- ModalContent,
- ModalHeader,
- ModalFooter,
- ModalBody,
- ModalCloseButton,
- useDisclosure,
- Button,
-} from "@chakra-ui/react";
+import { useDisclosure } from "@chakra-ui/react";
 import AdminModal from "../components/AdminModal";
 import HomeDepot from "../../testData/Home_Depot_commercial.json";
+import Loader from "../components/Loader";
+import testAds from "../../testData/testAds";
+import axios from "axios";
 
-const transcript = HomeDepot.results.transcripts[0].transcript;
+const UPLOAD_LIST_URL = "http://127.0.0.1:8000/api/listAudioAds";
+enum BackenStatus {
+ REJECTED = "Rejected",
+ APPROVED = "Approved",
+ PENDING = "Pending",
+}
+const backendToFrontend = (backendStatus: BackenStatus) => {
+ if (backendStatus == BackenStatus.APPROVED) {
+  return StatusCode.APPROVED;
+ }
+ if (backendStatus == BackenStatus.REJECTED) {
+  return StatusCode.REJECTED;
+ }
+ return StatusCode.PENDING;
+};
 const cc: {
  text: string;
  start: number;
  end: number;
 }[] = [];
-HomeDepot.results.items.forEach(({ alternatives, end_time, start_time }) => {
- if (start_time && end_time) {
-  cc.push({
-   text: alternatives[0].content,
-   start: parseFloat(start_time),
-   end: parseFloat(end_time),
-  });
- }
-});
-
-const tanscriptAndCC = {
- transcript,
- cc,
-};
 
 interface Ad {
  id: string;
@@ -45,11 +38,7 @@ interface Ad {
 }
 
 export const AdminDashboard = () => {
- const dunkin = "./audio/Dunkin.mp3";
- const homedepot = "./audio/HomeDepot.mp3";
  const audioElm = React.useRef<HTMLAudioElement>(null);
- const title = "A very long title for this Ad";
- const statusCode = StatusCode.APPROVED;
  const { isOpen, onOpen, onClose } = useDisclosure();
  const [isPlaying, setisPlaying] = React.useState(false);
  const [ads, setAds] = React.useState<Ad[]>([]);
@@ -75,8 +64,9 @@ export const AdminDashboard = () => {
    }
   } else {
    if (audioPlayer) {
-    audioPlayer.currentTime = 0;
-    audioPlayer.pause();
+    if (currentAd && currentAd.audioFile == ad.audioFile) {
+     audioPlayer.currentTime = 0;
+    }
    }
    setisPlaying(true);
    setCurrentAd(ad);
@@ -159,32 +149,25 @@ export const AdminDashboard = () => {
 
  React.useEffect(() => {
   setIsLoading(true);
-  setTimeout(() => {
-   setAds([
-    {
-     id: "dunkin",
-     title: "The Dunkin Donuts Advertisement",
-     status: StatusCode.APPROVED,
-     audioFile: dunkin,
+  axios.get(UPLOAD_LIST_URL).then((res) => {
+   console.log(res);
+   const ads: Ad[] = [];
+   res.data.forEach((el: { ad: any; transcription: any }) => {
+    const { id, status, title, audio_file_name } = el.ad;
+    const { transcript } = el.transcription;
+
+    ads.push({
+     audioFile: `http://127.0.0.1:8000/api/audio/${audio_file_name}`,
+     title: title,
      transcript: transcript,
-    },
-    {
-     id: "homedepot",
-     title: "The HomeDepot Advertisement",
-     status: StatusCode.PENDING,
-     audioFile: homedepot,
-     transcript: transcript,
-    },
-    {
-     id: "dunkin2",
-     title: "2 The Dunkin Donuts Advertisement",
-     status: StatusCode.REJECTED,
-     audioFile: dunkin,
-     transcript: transcript,
-    },
-   ]);
+     id: id,
+     status: backendToFrontend(status),
+    });
+   });
+   console.log(ads);
+   setAds(ads);
    setIsLoading(false);
-  }, 3000);
+  });
  }, []);
 
  const AdList = ads.map((el) => {
@@ -207,7 +190,7 @@ export const AdminDashboard = () => {
 
  return (
   <>
-   {currentAd ? (
+   {currentAd && (
     <AdminModal
      title={currentAd.title}
      transcript={currentAd.transcript}
@@ -219,7 +202,7 @@ export const AdminDashboard = () => {
      onApproveClick={approveClickHandler}
      onRejectClick={rejectClickHandler}
     />
-   ) : undefined}
+   )}
    <Flex
     flexDirection="column"
     width="100wh"
@@ -227,6 +210,7 @@ export const AdminDashboard = () => {
     backgroundColor="gray.200"
     alignItems="center"
    >
+    {isLoading && <Loader />}
     <audio
      ref={audioElm}
      src={currentAd?.audioFile}

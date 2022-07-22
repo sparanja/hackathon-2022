@@ -8,19 +8,24 @@ import {
  Heading,
  Input,
  Spacer,
- Spinner,
  Stack,
  Textarea,
 } from "@chakra-ui/react";
 import axios from "axios";
-import { Link as ReactRouterLink } from "react-router-dom";
+import { Link as ReactRouterLink, useNavigate } from "react-router-dom";
+import Loader from "../components/Loader";
+import StatusCode from "../common/StatusCode";
 
 export const AdCreationForm = () => {
  const fileInput = React.useRef<HTMLInputElement>(null);
  const adNameInput = React.useRef<HTMLInputElement>(null);
  const adDescriptionInput = React.useRef<HTMLTextAreaElement>(null);
  const [isMakingRequest, setIsMakingReuquest] = React.useState(false);
+ const [finishedStatus, setFinishedStatus] =
+  React.useState<StatusCode | null>(null);
  const UPLOAD_URL = "http://127.0.0.1:8000/api/upload";
+
+ const navigate = useNavigate();
 
  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
   /*
@@ -57,7 +62,14 @@ export const AdCreationForm = () => {
       },
      })
      .then((res) => {
-      console.log("File Uploaded");
+      if (res.data.status == "Approved") {
+       setFinishedStatus(StatusCode.APPROVED);
+      } else if (res.data.status == "Rejected") {
+       setFinishedStatus(StatusCode.REJECTED);
+      } else {
+       setFinishedStatus(StatusCode.PENDING);
+      }
+      console.log(res);
      })
      .catch((err) => {
       console.log(err);
@@ -66,6 +78,33 @@ export const AdCreationForm = () => {
    setIsMakingReuquest(true);
   }
  };
+
+ const resetHandler = () => {
+  if (fileInput.current) {
+   fileInput.current.value = "";
+  }
+  if (adNameInput.current) {
+   adNameInput.current.value = "";
+  }
+  if (adDescriptionInput.current) {
+   adDescriptionInput.current.value = "";
+  }
+ };
+
+ React.useEffect(() => {
+  // Check if button has been pressed, if so update the page
+  if (finishedStatus) {
+   if (finishedStatus == StatusCode.APPROVED) {
+    navigate("/adsuccess");
+   }
+   if (finishedStatus == StatusCode.REJECTED) {
+    navigate("/adrejected");
+   }
+   if (finishedStatus == StatusCode.PENDING) {
+    navigate("/adpending");
+   }
+  }
+ }, [finishedStatus]);
 
  if (isMakingRequest) {
   return (
@@ -89,13 +128,7 @@ export const AdCreationForm = () => {
         <Heading p="3">Finishing Your Ad Placement</Heading>
        </Box>
        <Box>
-        <Spinner
-         thickness="4px"
-         speed="0.65s"
-         emptyColor="gray"
-         color="red"
-         size="xl"
-        />
+        <Loader />
        </Box>
        <Box>
         <Button colorScheme="red" as={ReactRouterLink} to="/">
@@ -157,7 +190,7 @@ export const AdCreationForm = () => {
           Submit
          </Button>
          <Spacer />
-         <Button>Reset</Button>
+         <Button onClick={resetHandler}>Reset</Button>
         </Flex>
        </FormControl>
       </Stack>

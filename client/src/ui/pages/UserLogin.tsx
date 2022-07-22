@@ -9,8 +9,10 @@ import {
  FormControl,
  FormLabel,
 } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 export const UserLogin = () => {
+ const navigate = useNavigate();
  const emailInput = useRef<HTMLInputElement>(null);
  const passwordInput = useRef<HTMLInputElement>(null);
 
@@ -19,7 +21,9 @@ export const UserLogin = () => {
   if (emailInput.current && passwordInput.current) {
    console.log(emailInput.current.value);
    console.log(passwordInput.current.value);
-   localStorage.setItem("isLoggedIn", "true");
+   const user = { email: emailInput.current.value };
+   localStorage.setItem("auth", JSON.stringify({ user }));
+   navigate("/");
   }
  };
 
