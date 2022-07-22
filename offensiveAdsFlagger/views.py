@@ -1,8 +1,9 @@
+import json
 import uuid
 
 import boto3
 from django.conf import settings
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_http_methods
 
 from offensiveAdsFlagger.models import ExampleModel
@@ -61,7 +62,9 @@ def upload(request):
 
     # TODO (medium proity) associate the user with this AudioAd
 
-    # TODO (high priority) return reponse to the user
+    # return reponse to the user
+    json_data["confidence"] = json_data
+    return JsonResponse(json_data)
 
 
 def change_ad_status(request, audio_ad_id):
