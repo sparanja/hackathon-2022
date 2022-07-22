@@ -32,6 +32,7 @@ try:
     AWS_ACCESS_KEY = os.environ["AWS_ACCESS_KEY"]
     AWS_SECRET_KEY = os.environ["AWS_SECRET_KEY"]
     AWS_S3_BUCKET = os.environ["AWS_S3_BUCKET"]
+    AWS_REGION = os.environ.get("AWS_REGION", "us-east-1")
 except KeyError:
     print("Error: Must set the following environment variables:\n\tAWS_ACCESS_KEY\n\tAWS_SECRET_KEY\n\tAWS_S3_BUCKET")
     sys.exit()
