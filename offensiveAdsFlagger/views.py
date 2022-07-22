@@ -1,3 +1,5 @@
+import json
+
 from django.utils import timezone
 import io
 import json
@@ -73,6 +75,7 @@ def upload(request):
     # TODO (high priority) pass the transciption text to the model
     likelihood_of_food = s3.forage_for_food(json_data['transcript'])
     # TODO (high priority) create entries for the Transciption / AudioAd model
+    save_audio_with_transcript(json_data['transcript'])
 
     # TODO (medium proity) associate the user with this AudioAd
 
@@ -82,15 +85,14 @@ def upload(request):
 
 
 def save_audio_with_transcript(json_data):
-    transcription = Transcription(1, json_data, json_data['contains_food'], json_data['confidence'])
+    transcription = Transcription(data=json_data, contains_food=json_data['contains_food'],
+                                  confidence=json_data['confidence'])
     transcription.save()
     # myDate = datetime.now()
     myDate = timezone.now()
     audio_ad = AudioAd('1', 'COMPLETED', 'Home Depot: A sign of the times', 'Description of the ad', 'HomeDepot.mp3',
                        myDate, 1)
     audio_ad.save()
-
-    return True
 
 
 def change_ad_status(request, audio_ad_id):
@@ -104,12 +106,30 @@ def change_ad_status(request, audio_ad_id):
     ad.save()
     return '200'
 
+def converttodict(ad):
+    return {
+        'id': ad.id,
+        'status': ad.status,
+        'title': ad.title,
+        'description': ad.description,
+        'audio_file_name': ad.audio_file_name,
+        'uploaded_at': str(ad.uploaded_at),
+        'transcription_id': ad.transcription_id
+    }
+
+
 def list_audio_ads(request):
-    """"""
-    # TODO (high priority) list ads for the user
-    # (maybe filter based on user but for demo we can probably just list out all the audio ads)
-    ads = AudioAd.objects.all()
-    return ads
+    result = []
+    ads = AudioAd.objects.select_related().all()
+    for ad in ads:
+        temp = {
+                "transcription": ad.transcription.data,
+                "ad": converttodict(ad)
+            }
+        result.append(temp)
+
+    return HttpResponse(json.dumps(result))
+
 
 def remove_ad_from_user(request, audio_ad_id):
     """disassociate a user from an add"""
