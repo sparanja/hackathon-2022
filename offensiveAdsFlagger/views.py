@@ -53,6 +53,8 @@ s3_client = boto3.client(
 def upload(request):
     """"""
     # TODO (low priority) check if we already processed this file and exit early if we did
+    ad_name = request.POST["name"]
+    description = request.POST["description"]
 
     # store the file in s3 (to be determined if we have time)
     s3 = S3Client(s3_client)
@@ -72,15 +74,34 @@ def upload(request):
     # download the transciption job stored in s3
     json_data = s3.download_transcription_job(output_file)
 
-    # TODO (high priority) pass the transciption text to the model
+    # pass the transciption text to the model
     likelihood_of_food = s3.forage_for_food(json_data['transcript'])
-    # TODO (high priority) create entries for the Transciption / AudioAd model
-    save_audio_with_transcript(json_data['transcript'])
+
+    # create entries for the Transciption / AudioAd model
+    transcription = Transcription(data=json_data, confidence=likelihood_of_food)
+    transcription.save()
+
+    # the output file name is just the {id}.json
+    ad_id = output_file.rstrip(".json")
+
+    ad = AudioAd(
+        id=ad_id,
+        title=ad_name,
+        description=description,
+        audio_file_name=filename,
+        transcription=transcription,
+    )
+    ad.save()
 
     # TODO (medium proity) associate the user with this AudioAd
 
     # return reponse to the user
     json_data["confidence"] = likelihood_of_food
+    json_data["id"] = ad_id
+    json_data["name"] = ad_name
+    json_data["description"] = description
+    json_data["fileName"] = filename
+    json_data["status"] = ad.status
     return JsonResponse(json_data)
 
 

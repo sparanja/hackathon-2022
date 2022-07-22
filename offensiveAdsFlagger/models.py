@@ -13,6 +13,14 @@ class Transcription(models.Model):
     class Meta:
         db_table = "audio_transcriptions"
 
+    def save(self, *args, **kwargs):
+        if self.confidence >= .6:
+            self.contains_food = True
+        else:
+            self.contains_food = False
+
+        super().save(*args, **kwargs)
+
 
 class AudioAd(models.Model):
     STATUS = [
@@ -58,6 +66,15 @@ class AudioAd(models.Model):
     def s3_url(self) -> str:
         """return the HTTP URL for the audio file stored in s3"""
         return s3_url(settings.AWS_S3_BUCKET, self.audio_file_name)
+
+    def save(self):
+        if self.transcription.confidence >= .7:
+            self.status = "Approved"
+        elif self.transcription.confidence >= .3:
+            self.status = "Pending"
+        else:
+            self.status = "Rejected"
+        super().save()
 
 
 '''

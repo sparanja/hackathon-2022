@@ -1,5 +1,6 @@
 # Create your tests here.
 import pytest
+from offensiveAdsFlagger.models import Transcription, AudioAd
 
 @pytest.fixture
 def test_audio_file(pytestconfig):
@@ -19,8 +20,27 @@ def test_upload_endpoint_get(method, client):
     assert response.status_code == 405
 
 
+@pytest.mark.django_db
 def test_upload_endpoint_post(client, test_audio_file):
     """Make a POST request to the `/api/upload/"""
     with open(test_audio_file, mode="rb") as fp:
-        response = client.post('/api/upload', {'name': 'fred', 'attachment': fp})
+        response = client.post(
+            "/api/upload",
+            {
+                "name": "Home Depo Commercial",
+                "description": "test description for home depot!",
+                "home_depot_test_audio.mp3": fp
+            }
+        )
         assert response.status_code == 200
+
+        json_data = response.json()
+
+    breakpoint()
+    transcription = Transcription.objects.get(id=1)
+    audio_ad = AudioAd.objects.get(id=json_data["id"])
+    assert audio_ad.title == "Home Depo Commercial"
+    assert audio_ad.description == "test description for home depot!"
+    assert audio_ad.audio_file_name == "home_depot_test_audio.mp3"
+    assert audio_ad.transcription == transcription
+
