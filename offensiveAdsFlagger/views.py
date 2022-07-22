@@ -58,6 +58,8 @@ def upload(request):
     # we're assuming that we only get a single file, which for our app should be the case
     # See the HttpRequest.FILES docs for more details on files:
     # https://docs.djangoproject.com/en/4.0/ref/request-response/#django.http.HttpRequest.FILES
+    print(request.POST)
+    print(request.FILES)
     filename, file_content = list(request.FILES.items())[0]
     s3.upload_file(filename, file_content)
 
