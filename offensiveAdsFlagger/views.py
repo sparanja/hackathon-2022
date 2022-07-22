@@ -1,4 +1,7 @@
 from django.utils import timezone
+import io
+import json
+import uuid
 
 import boto3
 from django.conf import settings
@@ -72,7 +75,7 @@ def upload(request):
     # TODO (medium proity) associate the user with this AudioAd
 
     # return reponse to the user
-    json_data["confidence"] = json_data
+    json_data["confidence"] = likelihood_of_food
     return JsonResponse(json_data)
 
 

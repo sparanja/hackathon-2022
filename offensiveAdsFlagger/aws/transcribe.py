@@ -21,12 +21,14 @@ class TranscribeClient:
         if output_bucket_name is None:
             # default to settings.AWS_S3_BUCKET if none was provided
             self.output_bucket_name = settings.AWS_S3_BUCKET
-        self.output_bucket_name = output_bucket_name
+        else:
+            self.output_bucket_name = output_bucket_name
 
         if input_bucket_name is None:
             # default to settings.AWS_S3_BUCKET if none was provided
             self.input_bucket_name = settings.AWS_S3_BUCKET
-        self.input_bucket_name = input_bucket_name
+        else:
+            self.input_bucket_name = input_bucket_name
 
     def transcribe_file(
         self,
