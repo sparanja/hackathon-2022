@@ -14,7 +14,6 @@ import { Link as ReactRouterLink, useNavigate } from "react-router-dom";
 import StatusCode from "../common/StatusCode";
 import Loader from "../components/Loader";
 import axios from "axios";
-import NavBar from "../components/Navbar";
 
 const UPLOAD_LIST_URL = "http://127.0.0.1:8000/api/listAudioAds";
 
@@ -53,10 +52,6 @@ export const UserDashboard = () => {
   onClose();
  };
 
- const logoutHandler = () => {
-  localStorage.removeItem("auth");
-  navigate("/");
- };
  const onPlayClickHandler = (ad: Ad) => {
   // If Current Ad is the ad
   // Flip Is playing
@@ -150,79 +145,51 @@ export const UserDashboard = () => {
 
  return (
   <>
-   <Flex
-    flexDirection="column"
-    width="100wh"
-    height="100vh"
-    backgroundColor="gray.200"
-    alignItems="center"
-   >
-    <NavBar />
-    <audio
-     ref={audioElm}
-     src={currentAd?.audioFile}
-     onLoadedMetadata={onLoadedMetadata}
-     onTimeUpdate={() => {}}
-     onPause={() => {}}
-     onEnded={onAudioEndedHandler}
-    ></audio>
-    <Stack>
-     <Box>
-      <Stack>
-       <Box
-        p={0}
-        display={{ md: "flex" }}
-        width="32rem"
-        maxW="100vw"
-        borderWidth="1px"
-        borderColor="gray"
-        borderRadius={8}
-        backgroundColor="white"
-       >
-        <Button w="100%" onClick={logoutHandler}>
-         LogOut
-        </Button>
-       </Box>
-       <Box
-        p={0}
-        display={{ md: "flex" }}
-        width="32rem"
-        maxW="100vw"
-        borderWidth="1px"
-        borderColor="gray"
-        borderRadius={8}
-        backgroundColor="white"
-       >
-        <Button
-         w="100%"
-         colorScheme="red"
-         as={ReactRouterLink}
-         to="/adcreation"
-        >
-         Create A New Audio Ad
-        </Button>
-       </Box>
-      </Stack>
-     </Box>
+   <audio
+    ref={audioElm}
+    src={currentAd?.audioFile}
+    onLoadedMetadata={onLoadedMetadata}
+    onTimeUpdate={() => {}}
+    onPause={() => {}}
+    onEnded={onAudioEndedHandler}
+   ></audio>
+   <Stack>
+    <Box>
+     <Stack>
+      <Box
+       p={0}
+       display={{ md: "flex" }}
+       width="32rem"
+       maxW="100vw"
+       borderWidth="1px"
+       borderColor="gray"
+       borderRadius={8}
+       backgroundColor="white"
+      >
+       <Button w="100%" colorScheme="red" as={ReactRouterLink} to="/adcreation">
+        Create A New Audio Ad
+       </Button>
+      </Box>
+     </Stack>
      {isLoading && (
-      <Center>
+      <Center p={3}>
        <Loader />
       </Center>
      )}
-     {!isLoading && Adlist.length > 0 && (
-      <Box>
-       <Stack>{Adlist}</Stack>
-      </Box>
-     )}
-     {!isLoading && Adlist.length == 0 && (
-      <Box>
-       <Heading size={"sm"}>
-        You have no ads, but you should create some.
-       </Heading>
-      </Box>
-     )}
-    </Stack>
-   </Flex>
+    </Box>
+    {!isLoading && Adlist.length > 0 && (
+     <Box>
+      <Stack>{Adlist}</Stack>
+     </Box>
+    )}
+    {!isLoading && Adlist.length == 0 && (
+     <Box>
+      <Heading size={"sm"}>
+       You have no ads, but you should create some.
+      </Heading>
+     </Box>
+    )}
+   </Stack>
   </>
  );
 };

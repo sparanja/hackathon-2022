@@ -54,7 +54,7 @@ const AdminCard = ({
    backgroundColor="white"
    margin={2}
   >
-   <Stack spacing={5}>
+   <Stack w="100%" spacing={5}>
     <Flex direction="row" alignItems="center">
      <Box>
       <Heading noOfLines={1}>{title}</Heading>

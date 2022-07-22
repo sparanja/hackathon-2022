@@ -17,6 +17,12 @@ import {
 import StatusCode, { getStatusColor } from "../common/StatusCode";
 import PlayerButton from "./PlayerButton";
 
+interface CC {
+ end: number;
+ start: number;
+ text: string;
+}
+
 interface AdminModalProps {
  title: string;
  status: StatusCode;
@@ -28,6 +34,8 @@ interface AdminModalProps {
  playerIsPlaying: boolean;
  onRejectClick: () => void;
  onApproveClick: () => void;
+ cc: CC[];
+ playerTime: number;
 }
 
 const statusText = (status: StatusCode) => {
@@ -49,6 +57,8 @@ export const AdminModal = ({
  playerIsPlaying,
  onApproveClick,
  onRejectClick,
+ cc,
+ playerTime,
 }: AdminModalProps) => {
  const statusColor = getStatusColor(status);
 
@@ -62,6 +72,22 @@ export const AdminModal = ({
     </Text>
    </Heading>
   );
+ };
+
+ const transcriptList = () => {
+  return transcript.split(" ").map((s, i, a) => {
+   return (
+    <Text
+     key={i}
+     as={"span"}
+     color={
+      cc[i].start <= playerTime && playerTime <= cc[i].end ? "red" : undefined
+     }
+    >
+     {i < a.length - 1 ? s + " " : s}
+    </Text>
+   );
+  });
  };
 
  return (
@@ -81,7 +107,7 @@ export const AdminModal = ({
        ></PlayerButton>
       </Flex>
       <Box borderColor="grey" borderWidth={1} p={3} rounded={8}>
-       <Text>{transcript}</Text>
+       <Text>{transcriptList()}</Text>
       </Box>
      </Stack>
     </ModalBody>
