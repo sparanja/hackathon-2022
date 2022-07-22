@@ -107,7 +107,6 @@ def upload(request):
 
 @require_http_methods(["GET"])
 def get_s3_file(request, filename):
-    breakpoint()
     s3 = S3Client(s3_client)
     buffer = s3.download_file(filename)
     return FileResponse(buffer, filename=filename)
