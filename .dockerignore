@@ -1,0 +1,12 @@
+__pycache__
+.pytest_cache
+.venv/
+client/
+data/
+scripts/
+test/
+.python-verions
+BUILD
+pytest.ini
+README.md
+VERSION

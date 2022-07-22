@@ -12,3 +12,19 @@ services:
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+
+  web:
+    build: .
+    container_name: django
+    command: gunicorn --workers=5  -b 0.0.0.0:8001 hackathon2022.wsgi:application
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8001"
+    environment:
+      - AWS_ACCESS_KEY=${AWS_ACCESS_KEY}
+      - AWS_SECRET_KEY=${AWS_SECRET_KEY}
+      - AWS_S3_BUCKET=${AWS_S3_BUCKET}
+      - AWS_REGION=${AWS_REGION}
+    depends_on:
+      - db
