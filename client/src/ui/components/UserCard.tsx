@@ -9,6 +9,7 @@ export interface UserCardProps {
  onPlayerClick: () => void;
  isPlaying: boolean;
  status: StatusCode;
+ onAboutMyAdClick: () => void;
 }
 
 const title = "A title to be displayed";
@@ -18,6 +19,7 @@ const UserCard = ({
  onPlayerClick,
  isPlaying,
  status,
+ onAboutMyAdClick,
 }: UserCardProps) => {
  return (
   <Box
@@ -43,7 +45,7 @@ const UserCard = ({
      <PlayerButton size="lg" isPlaying={isPlaying} onClick={onPlayerClick} />
      <Spacer />
      <Box>
-      <Button>Fix Ad</Button>
+      <Button onClick={onAboutMyAdClick}>About My Ad</Button>
      </Box>
     </Flex>
    </Stack>

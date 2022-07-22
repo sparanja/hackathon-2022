@@ -8,12 +8,16 @@ import {
  Box,
  Heading,
  Center,
+ Avatar,
+ Spacer,
+ Text,
 } from "@chakra-ui/react";
 import UserCard from "../components/UserCard";
 import { Link as ReactRouterLink, useNavigate } from "react-router-dom";
 import StatusCode from "../common/StatusCode";
 import Loader from "../components/Loader";
 import axios from "axios";
+import UserModal from "../components/UserModal";
 
 const UPLOAD_LIST_URL = "http://127.0.0.1:8000/api/listAudioAds";
 
@@ -32,16 +36,23 @@ const backendToFrontend = (backendStatus: BackenStatus) => {
  return StatusCode.PENDING;
 };
 
+interface CC {
+ end: number;
+ start: number;
+ text: string;
+}
+
 interface Ad {
  id: string;
  title: string;
  status: StatusCode;
  audioFile: string;
  transcript: string;
+ cc: CC[];
+ description: string;
 }
 
 export const UserDashboard = () => {
- const navigate = useNavigate();
  const audioElm = React.useRef<HTMLAudioElement>(null);
  const { isOpen, onOpen, onClose } = useDisclosure();
  const [isPlaying, setisPlaying] = React.useState(false);
@@ -113,17 +124,21 @@ export const UserDashboard = () => {
    console.log(res);
    const ads: Ad[] = [];
    res.data.forEach((el: { ad: any; transcription: any }) => {
-    const { id, status, title, audio_file_name } = el.ad;
-    const { transcript } = el.transcription;
+    const { id, status, title, audio_file_name, description } = el.ad;
+    console.log(el);
+    const { transcript, cc } = el.transcription;
 
     ads.push({
      audioFile: `http://127.0.0.1:8000/api/audio/${audio_file_name}`,
+     description: description,
      title: title,
      transcript: transcript,
      id: id,
      status: backendToFrontend(status),
+     cc: cc,
     });
    });
+
    setAds(ads);
    setIsLoading(false);
   });
@@ -135,6 +150,9 @@ export const UserDashboard = () => {
     key={el.id}
     status={el.status}
     title={el.title}
+    onAboutMyAdClick={() => {
+     onMoreInfoClickHandler(el);
+    }}
     isPlaying={!!currentAd && el.id == currentAd.id && isPlaying}
     onPlayerClick={() => {
      onPlayClickHandler(el);
@@ -142,9 +160,24 @@ export const UserDashboard = () => {
    />
   );
  });
+ const userEmail: string = JSON.parse(localStorage.getItem("auth") as string)
+  .user.email;
 
  return (
   <>
+   {currentAd && (
+    <UserModal
+     title={currentAd.title}
+     transcript={currentAd.transcript}
+     status={currentAd.status}
+     isOpen={isOpen}
+     onClose={onCloseHanlder}
+     onPlayerClick={() => onPlayClickHandler(currentAd)}
+     playerIsPlaying={isPlaying}
+     cc={currentAd.cc}
+     description={currentAd.description}
+    />
+   )}
    <audio
     ref={audioElm}
     src={currentAd?.audioFile}
@@ -154,6 +187,52 @@ export const UserDashboard = () => {
     onEnded={onAudioEndedHandler}
    ></audio>
    <Stack>
+    <Box
+     p={4}
+     display={{ md: "flex" }}
+     maxWidth="32rem"
+     borderWidth="1px"
+     borderColor="gray"
+     borderRadius={8}
+     backgroundColor="white"
+    >
+     <Stack direction="row" w="100%" alignItems="center">
+      <Avatar size="2xl" name="jon favreau" src="./imgs/avatar.jpeg" />
+      <Spacer />
+      <Box>
+       <Heading size="sm" py={1} as={"h6"}>
+        {userEmail}
+       </Heading>
+       <Heading size="sm" py={1} as={"h6"}>
+        <Text color="green" as={"b"}>
+         Approved:{" "}
+        </Text>
+        {
+         ads.filter(({ status }) => {
+          if (status == StatusCode.APPROVED) {
+           return true;
+          }
+          return false;
+         }).length
+        }
+       </Heading>
+       <Heading size="sm" py={1} as={"h6"}>
+        <Text color="red" as={"b"}>
+         Rejected:{" "}
+        </Text>
+        {
+         ads.filter(({ status }) => {
+          if (status == StatusCode.REJECTED) {
+           return true;
+          }
+
+          return false;
+         }).length
+        }
+       </Heading>
+      </Box>
+     </Stack>
+    </Box>
     <Box>
      <Stack>
       <Box
