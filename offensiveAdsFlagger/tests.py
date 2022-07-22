@@ -15,12 +15,12 @@ def test_health_endpoint(client):
 def test_upload_endpoint_get(method, client):
     """We're only allowed to send POST requests to the the /offensiveAdsFlagger/upload endpoint"""
     http_method = getattr(client, method)
-    response = http_method('/offensiveAdsFlagger/upload')
+    response = http_method('/api/upload')
     assert response.status_code == 405
 
 
 def test_upload_endpoint_post(client, test_audio_file):
-    """Make a POST request to the `/offensiveAdsFlagger/upload/"""
+    """Make a POST request to the `/api/upload/"""
     with open(test_audio_file, mode="rb") as fp:
-        response = client.post('/offensiveAdsFlagger/upload', {'name': 'fred', 'attachment': fp})
+        response = client.post('/api/upload', {'name': 'fred', 'attachment': fp})
         assert response.status_code == 200
